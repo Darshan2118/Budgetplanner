@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Budget Planner</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style id="dynamic-chart-styles">
+      /* Force chart legend text color */
+      body.dark-theme #dashboard-expenses-pie-chart-container span,
+      body.dark-theme #spending-by-category-container span,
+      body.dark-theme .chartjs-legend-item-text,
+      body.dark-theme li.chartjs-legend-item span {
+        color: #FFFFFF !important;
+      }
+
+      body:not(.dark-theme) #dashboard-expenses-pie-chart-container span,
+      body:not(.dark-theme) #spending-by-category-container span,
+      body:not(.dark-theme) .chartjs-legend-item-text,
+      body:not(.dark-theme) li.chartjs-legend-item span {
+        color: #000000 !important;
+      }
+    </style>
+    <style>
+      /* Styles for pulsating border glow on auth container */
+      #auth-container {
+        position: relative; /* Needed for pseudo-element positioning */
+        z-index: 1; /* Ensure content is above pseudo-element */
+      }
+
+      #auth-container::after {
+        content: "";
+        position: absolute;
+        top: -2px; /* Offset to sit just outside the container's actual border */
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        border-radius: 14px; /* container border-radius (12px) + offset (2px) */
+        z-index: -1; /* Place it behind the container's content but visible around edges */
+        animation: pulsatingBorderGlow 2.5s infinite ease-in-out;
+        pointer-events: none; /* Ensure it doesn't interfere with clicks on the container */
+      }
+
+      /* Keyframes for pulsating border glow (if not already in style.css) */
+      @keyframes pulsatingBorderGlow {
+        0% {
+          box-shadow: 0 0 2px 0px var(--primary-color-translucent),
+            0 0 4px 1px rgba(255, 0, 255, 0.3),
+            0 0 6px 2px rgba(0, 255, 255, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 4px 1px var(--primary-color-translucent),
+            0 0 8px 3px rgba(255, 0, 255, 0.5),
+            0 0 12px 5px rgba(0, 255, 255, 0.35);
+        }
+        100% {
+          box-shadow: 0 0 2px 0px var(--primary-color-translucent),
+            0 0 4px 1px rgba(255, 0, 255, 0.3),
+            0 0 6px 2px rgba(0, 255, 255, 0.2);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="auth-container">
+
+      <div id="login-view">
+        <h2>Login</h2>
+<form id="login-form">
+          <div>
+            <label for="login-username">Username:</label>
+            <input type="text" id="login-username" name="username" autocomplete="username" required />
+          </div>
+          <div>
+            <label for="login-password">Password:</label>
+            <input
+              type="password"
+              id="login-password"
+              name="password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+          <button type="submit" class="auth-button">Login</button>
+          <p>
+            Don't have an account?
+            <a href="#" id="show-register">Register here</a>
+          </p>
+        </form>
+      </div>
+
+      <div id="register-view" style="display: none">
+        <h2>Register</h2>
+<form id="register-form">
+          <div>
+            <label for="register-name">Name:</label>
+            <input type="text" id="register-name" name="name" autocomplete="name" required />
+          </div>
+          <div>
+            <label for="register-username">Username:</label>
+            <input
+              type="text"
+              id="register-username"
+              name="username"
+              autocomplete="username"
+              required
+            />
+          </div>
+          <div>
+            <label for="register-email">Email (Optional):</label>
+            <input type="email" id="register-email" name="email" autocomplete="email" />
+          </div>
+          <div>
+            <label for="register-password">Password:</label>
+            <input
+              type="password"
+              id="register-password"
+              name="password"
+              autocomplete="new-password"
+              required
+            />
+          </div>
+          <button type="submit" class="auth-button">Register</button>
+          <p>
+            Already have an account? <a href="#" id="show-login">Login here</a>
+          </p>
+        </form>
+      </div>
+      <div id="auth-message" class="message-area"></div>
+    </div>
+
+    <style>
+      /* Styles for pulsating border glow on auth container */
+      #auth-container {
+        position: relative; /* Needed for pseudo-element positioning */
+        z-index: 1; /* Ensure content is above pseudo-element */
+      }
+
+      #auth-container::after {
+        content: "";
+        position: absolute;
+        top: -2px; /* Offset to sit just outside the container's actual border */
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        border-radius: 14px; /* container border-radius (12px) + offset (2px) */
+        z-index: -1; /* Place it behind the container's content but visible around edges */
+        animation: pulsatingBorderGlow 2.5s infinite ease-in-out;
+        pointer-events: none; /* Ensure it doesn't interfere with clicks on the container */
+      }
+
+      /* Keyframes for pulsating border glow (if not already in style.css) */
+      @keyframes pulsatingBorderGlow {
+        0% {
+          box-shadow: 0 0 2px 0px var(--primary-color-translucent),
+            0 0 4px 1px rgba(255, 0, 255, 0.3),
+            0 0 6px 2px rgba(0, 255, 255, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 4px 1px var(--primary-color-translucent),
+            0 0 8px 3px rgba(255, 0, 255, 0.5),
+            0 0 12px 5px rgba(0, 255, 255, 0.35);
+        }
+        100% {
+          box-shadow: 0 0 2px 0px var(--primary-color-translucent),
+            0 0 4px 1px rgba(255, 0, 255, 0.3),
+            0 0 6px 2px rgba(0, 255, 255, 0.2);
+        }
+      }
+
+      /* Style for the auth buttons (Login, Register) */
+      .auth-button {
+        background-image: linear-gradient(
+          45deg,
+          var(--primary-color) 0%,
+          #ff00ff 50%,
+          var(--primary-hover-color) 100%
+        );
+        background-size: 200% auto;
+        color: #fff;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: 500;
+        transition: background-position 0.4s ease, transform 0.2s ease,
+          box-shadow 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        margin-top: 15px; /* Space above the button */
+      }
+
+      .auth-button:hover {
+        background-position: right center;
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 6px 15px var(--primary-color-translucent);
+      }
+    </style>
+
+    <div id="app-container" style="display: none;" class="app-layout">
+      <aside class="sidebar" id="app-sidebar">
+        <div class="sidebar-header">
+          <h2>Budget</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#" class="sidebar-link active" data-page="dashboard-page">
+            <span class="icon">🏠</span><span class="link-text"> Dashboard</span>
+          </a>
+          <a href="#" class="sidebar-link" data-page="goals-page">
+            <span class="icon">🎯</span><span class="link-text"> Goals</span>
+          </a>
+          <a href="#" class="sidebar-link" data-page="entries-page">
+            <span class="icon">📝</span><span class="link-text"> Entries</span>
+          </a>
+          <a href="#" class="sidebar-link" data-page="insights-page">
+            <span class="icon">📊</span><span class="link-text"> Insights</span>
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+
+        </div>
+      </aside>
+      <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+      <div class="main-content-wrapper">
+        <header class="main-header">
+          <button id="mobile-sidebar-toggle" class="header-icon-button" aria-label="Toggle sidebar">
+            <span class="icon">☰</span>
+          </button>
+          <h1 id="page-title">Dashboard</h1>
+          <div class="header-actions">
+
+            <button id="header-theme-toggle-button" class="header-icon-button" aria-label="Toggle Theme">
+              <span class="icon" id="theme-icon">🌙</span>
+            </button>
+
+            <div class="profile-area">
+              <button id="profile-picture-button" class="pfp-button" aria-label="Profile Menu">
+
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236c757d' width='40px' height='40px'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="PFP" id="pfp-image-placeholder" style="width:40px; height:40px; border-radius:50%;" />
+              </button>
+              <div id="profile-dropdown-menu" class="dropdown-menu">
+                <div id="dropdown-username" class="dropdown-item" style="font-weight: bold; text-align: center; border-bottom: 1px solid var(--border-color); margin-bottom: 5px; padding-bottom: 8px;">Username</div>
+                <a href="#" id="dropdown-settings-link" class="dropdown-item" data-page="settings-page">Settings</a>
+                <button id="dropdown-logout-button" class="dropdown-item">Logout</button>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main id="app-content" class="page-content">
+
+          <section id="dashboard-page" class="page active">
+            <div class="month-controls-budget">
+              <button id="open-month-selector-btn">Select Month</button>
+              <span id="current-month-display">May 2025</span>
+              <div class="budget-info">
+                <span>Budget for <span id="budget-for-month-year">May 2025</span>: </span>
+                <span id="monthly-budget-amount">Not Set</span>
+                <button id="set-month-budget-btn">Set/Edit Budget</button>
+              </div>
+            </div>
+
+            <!-- Month Selector Modal -->
+            <div id="month-selector-modal" class="modal" style="display: none;">
+              <div class="modal-content">
+                <span class="close-button" id="modal-close-month-selector-btn">&times;</span>
+                <h3 id="month-selector-title">Select Month and Year</h3>
+                <div>
+                  <label for="month-select">Month:</label>
+                  <select id="month-select">
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="year-select">Year:</label>
+                  <select id="year-select">
+                    <!-- Years will be dynamically populated by JS -->
+                  </select>
+                </div>
+                <button id="modal-apply-month-btn">Apply</button>
+                <div id="modal-month-message" class="message-area"></div>
+              </div>
+            </div>
+
+            <div class="dashboard-main-grid">
+              <div class="dashboard-item summary-budgeted-card">
+                <div class="summary-card budgeted">
+                  <h4>Budgeted</h4>
+                  <div class="amount" id="summary-budgeted">₹0.00</div>
+                  <p class="detail">per month</p>
+                </div>
+              </div>
+              <div class="dashboard-item summary-income-card">
+                <div class="summary-card income">
+                  <h4>Income</h4>
+                  <div class="amount" id="summary-income">₹0.00</div>
+                  <p class="detail" id="summary-income-detail">in this month</p>
+                </div>
+              </div>
+              <div class="dashboard-item summary-spent-card">
+                <div class="summary-card spent">
+                  <h4>Spent</h4>
+                  <div class="amount" id="summary-spent">₹0.00</div>
+                  <p class="detail" id="summary-spent-detail">in this month</p>
+                  <div class="progress-bar-container">
+                    <div class="progress-bar" id="summary-spent-progress" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="dashboard-item summary-remaining-card">
+                <div class="summary-card remaining">
+                  <h4>Remaining</h4>
+                  <div class="amount" id="summary-remaining">₹0.00</div>
+                  <p class="detail" id="summary-remaining-detail">Budget + Income - Expense</p>
+                   <div class="progress-bar-container">
+                    <div class="progress-bar" id="summary-remaining-progress" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dashboard-item add-expense-card">
+                <form id="add-entry-form" class="dashboard-add-expense-form">
+                  <h3 id="entry-form-title">Add Entry</h3>
+                  <input type="hidden" id="entry-id-hidden" name="entryId" />
+
+                  <div>
+                    <label for="entry-type">Type:</label>
+                    <select id="entry-type" name="type" required>
+                      <option value="expense">Expense</option>
+                      <option value="income">Income</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="entry-amount">Amount:</label>
+                    <input type="number" id="entry-amount" name="amount" step="0.01" placeholder="Amount ($0.00)" required />
+                  </div>
+                  <div>
+                    <label for="entry-date">Date:</label>
+                    <input type="date" id="entry-date" name="date" required />
+                  </div>
+                  <div>
+                    <label for="entry-category">Category:</label>
+                    <input type="text" id="entry-category" name="category" placeholder="Category (e.g., Food, Rent)" required />
+                  </div>
+                  <div>
+                    <label for="entry-description">Description:</label>
+                    <input type="text" id="entry-description" name="description" placeholder="Description (optional)" />
+                  </div>
+
+                  <button type="submit" id="entry-form-submit-button">Add Entry</button>
+                  <button type="button" id="entry-form-cancel-button" style="display: none;">Cancel Edit</button>
+                  <div id="entry-form-message" class="message-area"></div>
+                </form>
+              </div>
+
+              <div class="dashboard-item expenses-pie-chart-card">
+                <div id="dashboard-expenses-pie-chart-container">
+                  <div class="chart-header">
+                    <div class="chart-title-container">
+                      <h3>Category Breakdown</h3>
+                      <div class="chart-subtitle" id="dashboard-chart-subtitle">Expenses by Category</div>
+                    </div>
+                    <div class="chart-toggle-buttons">
+                      <button id="dashboard-chart-toggle-expense" class="chart-toggle-btn active">Expenses</button>
+                      <button id="dashboard-chart-toggle-income" class="chart-toggle-btn">Income</button>
+                    </div>
+                  </div>
+                  <div style="height: 220px; position: relative;">
+                    <canvas id="dashboardSpendingByCategoryChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </section>
+
+          <section id="entries-page" class="page">
+            <h2>Your Budget Entries</h2>
+            <div class="entries-filters">
+              <div class="filter-group">
+                <label for="entries-filter-type">Type:</label>
+                <select id="entries-filter-type">
+                  <option value="all">All</option>
+                  <option value="expense">Expenses</option>
+                  <option value="income">Income</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label for="entries-filter-category">Category:</label>
+                <select id="entries-filter-category">
+                  <option value="all">All Categories</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label for="entries-filter-date-from">From:</label>
+                <input type="date" id="entries-filter-date-from" />
+              </div>
+              <div class="filter-group">
+                <label for="entries-filter-date-to">To:</label>
+                <input type="date" id="entries-filter-date-to" />
+              </div>
+              <button id="apply-entries-filters-btn">Apply Filters</button>
+              <button id="reset-entries-filters-btn">Reset</button>
+            </div>
+            <div id="entries-list-container">
+              <div id="entries-list"></div>
+            </div>
+          </section>
+
+          <section id="goals-page" class="page">
+            <h2>Your Financial Goals</h2>
+
+            <div class="goals-container">
+              <div id="goals-list-container">
+                <h3>Current Goals</h3>
+                <div id="goals-list">
+                  <p>Loading goals...</p>
+                </div>
+              </div>
+
+              <form id="add-goal-form">
+                <h3 id="goal-form-title">Add New Goal</h3>
+                <input type="hidden" id="goal-id-hidden" name="goalId" />
+                <div>
+                  <label for="goal-name">Goal Name:</label>
+                  <input type="text" id="goal-name" name="name" required />
+                </div>
+                <div>
+                  <label for="goal-target-amount">Target Amount (₹):</label>
+                  <input
+                    type="number"
+                    id="goal-target-amount"
+                    name="targetAmount"
+                    step="0.01"
+                    required
+                  />
+                </div>
+                <div>
+                  <label for="goal-current-amount">Current Amount (₹):</label>
+                  <input
+                    type="number"
+                    id="goal-current-amount"
+                    name="currentAmount"
+                    step="0.01"
+                    value="0"
+                  />
+                </div>
+                <div>
+                  <label for="goal-target-date">Target Date (Optional):</label>
+                  <input type="date" id="goal-target-date" name="targetDate" />
+                </div>
+                <div>
+                  <label for="goal-description">Description (Optional):</label>
+                  <input type="text" id="goal-description" name="description" />
+                </div>
+                <button type="submit" id="goal-form-submit-button">Add Goal</button>
+                <button
+                  type="button"
+                  id="goal-form-cancel-button"
+                  style="display: none"
+                >
+                  Cancel Edit
+                </button>
+                <div id="goal-form-message" class="message-area"></div>
+              </form>
+            </div>
+          </section>
+
+          <section id="settings-page" class="page">
+            <div class="settings-header">
+              <span class="icon user-icon">👤</span> <!-- Placeholder for user icon -->
+              <h2>Edit Profile</h2>
+            </div>
+            <div class="settings-content-grid">
+              <div class="settings-form-column">
+                <form id="edit-profile-form">
+                  <div>
+                    <label for="profile-name-display">YOUR NAME</label>
+                    <input type="text" id="profile-name-display" name="name" required />
+                  </div>
+                  <div>
+                    <label for="profile-joined-date-display">JOINED</label>
+                    <input type="text" id="profile-joined-date-display" name="joinedDate" readonly />
+                  </div>
+
+                  <a href="#" id="change-password-link" class="settings-link">
+                    <span class="icon key-icon">🔑</span> Change password
+                  </a>
+
+                  <button type="submit" id="save-profile-button">Save</button>
+                  <div id="edit-profile-form-message" class="message-area"></div>
+                </form>
+
+                <!-- Change Password Form (Initially Hidden, to be controlled by JS) -->
+                <form id="change-password-form-new" style="display: none; margin-top: 30px; padding: 20px; border: 1px solid var(--border-color); border-radius: 8px;">
+                  <h3>Change Password</h3>
+                  <div>
+                    <label for="current-password-new">Current Password:</label>
+                    <input type="password" id="current-password-new" name="currentPassword" autocomplete="current-password" required/>
+                  </div>
+                  <div>
+                    <label for="new-password-new">New Password:</label>
+                    <input type="password" id="new-password-new" name="newPassword" autocomplete="new-password" required/>
+                  </div>
+                  <div>
+                    <label for="confirm-new-password-new">Confirm New Password:</label>
+                    <input type="password" id="confirm-new-password-new" name="confirmNewPassword" autocomplete="new-password" required/>
+                  </div>
+                  <div style="display: flex; justify-content: flex-start; gap: 10px; margin-top:15px;">
+                      <button type="submit" id="update-password-button">Update Password</button>
+                      <button type="button" id="cancel-change-password-button" class="button-secondary">Cancel</button>
+                  </div>
+                  <div id="change-password-form-message-new" class="message-area" style="margin-top:15px;"></div>
+                </form>
+              </div>
+
+              <div class="settings-pfp-column">
+                <div class="pfp-container-settings">
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236c757d' width='150px' height='150px'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="Profile Picture" id="settings-pfp-preview-large" />
+                  <button id="edit-pfp-button" class="edit-pfp-btn">
+                    <span class="icon edit-icon">✏️</span>
+                  </button>
+                  <input type="file" id="pfp-file-input" accept="image/*" style="display: none;" />
+                </div>
+                <div id="set-pfp-form-message-new" class="message-area" style="margin-top:5px;"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="insights-page" class="page">
+            <h2>Insights</h2>
+            <div id="insights-content-container">
+              <div id="analytics-filters">
+                <label for="analytics-start-date">Start Date:</label>
+                <input type="date" id="analytics-start-date" name="startDate" />
+                <label for="analytics-end-date">End Date:</label>
+                <input type="date" id="analytics-end-date" name="endDate" />
+                <button id="apply-analytics-filters-btn">Apply Filters</button>
+              </div>
+
+              <div class="analytics-charts-container">
+                <div class="analytics-subsection">
+                  <div class="chart-header">
+                    <div class="chart-title-container">
+                      <h3>Category Breakdown</h3>
+                      <div class="chart-subtitle" id="insights-chart-subtitle">Expenses by Category</div>
+                    </div>
+                    <div class="chart-toggle-buttons">
+                      <button id="insights-chart-toggle-expense" class="chart-toggle-btn active">Expenses</button>
+                      <button id="insights-chart-toggle-income" class="chart-toggle-btn">Income</button>
+                    </div>
+                  </div>
+                  <div id="spending-by-category-container">
+                    <canvas id="spendingByCategoryChart"></canvas>
+                  </div>
+                </div>
+
+                <div class="analytics-subsection">
+                  <h3>Income vs. Expense</h3>
+                  <div id="income-vs-expense-container">
+                    <canvas id="incomeVsExpenseChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+      </main>
+
+      <!-- Budget Modal -->
+      <div id="budget-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <span class="close-button" id="modal-close-budget-btn">&times;</span>
+          <h3 id="budget-modal-title">Set Budget for [Month Year]</h3>
+          <div>
+            <label for="modal-budget-amount">Budget Amount (₹):</label>
+            <input type="number" id="modal-budget-amount" name="budgetAmount" step="0.01" placeholder="e.g., 50000" />
+          </div>
+          <button id="modal-save-budget-btn">Save Budget</button>
+          <div id="modal-budget-message" class="message-area"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+      flatpickr("#entry-date", {
+        dateFormat: "Y-m-d", // Format for the API
+        // Add more options here as needed (e.g., minDate, maxDate)
+      });
+    </script>
+    <script src="main.js"></script>
+  </body>
+</html>

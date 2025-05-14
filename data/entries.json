@@ -1,0 +1,102 @@
+[
+  {
+    "id": "ba9dc249-418a-480a-9d45-7b6c4552d8eb",
+    "userId": "c719421b-7ec5-4fd4-8a8f-76830dbff95f",
+    "type": "expense",
+    "category": "shopping",
+    "amount": 111,
+    "date": "2025-05-12T00:00:00.000Z",
+    "description": "",
+    "createdAt": "2025-05-09T04:33:21.253Z"
+  },
+  {
+    "id": "66bd7d1d-d197-470f-8f73-75433f35ff68",
+    "userId": "c719421b-7ec5-4fd4-8a8f-76830dbff95f",
+    "type": "income",
+    "category": "bonus",
+    "amount": 111111,
+    "date": "2025-05-09T00:00:00.000Z",
+    "description": "",
+    "createdAt": "2025-05-09T04:33:42.788Z"
+  },
+  {
+    "id": "8de29b34-7def-497e-a6c4-bc30950a6a7d",
+    "userId": "c719421b-7ec5-4fd4-8a8f-76830dbff95f",
+    "type": "income",
+    "category": "bonus",
+    "amount": 12000,
+    "date": "2025-05-19T00:00:00.000Z",
+    "description": "",
+    "createdAt": "2025-05-09T04:35:23.467Z"
+  },
+  {
+    "id": "07a7fa60-2212-420e-b43b-7ac6bdbb222b",
+    "userId": "c719421b-7ec5-4fd4-8a8f-76830dbff95f",
+    "type": "expense",
+    "category": "dinner ",
+    "amount": 1200,
+    "date": "2025-05-21T00:00:00.000Z",
+    "description": "",
+    "createdAt": "2025-05-09T04:39:14.930Z"
+  },
+  {
+    "id": "ae484a59-b129-4022-b94b-0e4445110f52",
+    "userId": "c719421b-7ec5-4fd4-8a8f-76830dbff95f",
+    "type": "expense",
+    "category": "shopping",
+    "amount": 2000,
+    "date": "2025-05-04T00:00:00.000Z",
+    "description": "",
+    "createdAt": "2025-05-10T03:47:19.966Z"
+  },
+  {
+    "id": "58c044f7-ce10-445c-9090-a4fdf3a26ea8",
+    "userId": "c719421b-7ec5-4fd4-8a8f-76830dbff95f",
+    "type": "expense",
+    "category": "dinner ",
+    "amount": 1212,
+    "date": "2025-05-04T00:00:00.000Z",
+    "description": "",
+    "createdAt": "2025-05-10T03:47:34.072Z"
+  },
+  {
+    "id": "b402d5d0-eb25-446a-8d22-e913526bae81",
+    "userId": "c719421b-7ec5-4fd4-8a8f-76830dbff95f",
+    "type": "income",
+    "category": "saving for phone ",
+    "amount": 133,
+    "date": "2025-05-10T00:00:00.000Z",
+    "description": "",
+    "createdAt": "2025-05-10T03:57:29.857Z"
+  },
+  {
+    "id": "055827d0-ec8b-4ec9-a191-61dcba52a534",
+    "userId": "0cbdcf46-687b-4322-8130-52b7570b97d3",
+    "type": "expense",
+    "category": "food ",
+    "amount": 600000,
+    "date": "2005-04-28T00:00:00.000Z",
+    "description": "",
+    "createdAt": "2025-05-10T08:01:05.699Z"
+  },
+  {
+    "id": "c36feedd-1b8b-4040-bada-28393061b30f",
+    "userId": "c719421b-7ec5-4fd4-8a8f-76830dbff95f",
+    "type": "income",
+    "category": "bonus",
+    "amount": 10000,
+    "date": "2025-05-14T00:00:00.000Z",
+    "description": "",
+    "createdAt": "2025-05-14T16:07:14.508Z"
+  },
+  {
+    "id": "34320def-8297-437e-b8d9-c42b1204931a",
+    "userId": "c719421b-7ec5-4fd4-8a8f-76830dbff95f",
+    "type": "income",
+    "category": "bonus",
+    "amount": 10000,
+    "date": "2025-05-14T00:00:00.000Z",
+    "description": "",
+    "createdAt": "2025-05-14T16:15:38.678Z"
+  }
+]

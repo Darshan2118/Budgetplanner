@@ -1,0 +1,24 @@
+[
+  {
+    "id": "c719421b-7ec5-4fd4-8a8f-76830dbff95f",
+    "name": "admin",
+    "username": "admin",
+    "email": null,
+    "password": "$2a$10$ZonVm.c9CKiYI5yXKhEFuOmm5h/ozGrdrGkD5XUW347KC2KTS/yJy",
+    "createdAt": "2025-05-08T18:02:30.935Z",
+    "pfpUrl": "/uploads/pfps/pfp-1747238031748-482922697.jpg",
+    "updatedAt": "2025-05-14T15:54:54.472Z",
+    "monthlyBudgets": {
+      "2025-05": 2500,
+      "2025-04": 10000
+    }
+  },
+  {
+    "id": "0cbdcf46-687b-4322-8130-52b7570b97d3",
+    "name": "Brundha",
+    "username": "viha",
+    "email": null,
+    "password": "$2a$10$eERsQ7e0eK2JTMONJk0AA.fm6UQ1RgpYwH7Eqd3xY8v547x8Sln5m",
+    "createdAt": "2025-05-10T07:59:56.450Z"
+  }
+]

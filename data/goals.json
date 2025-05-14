@@ -1,0 +1,13 @@
+[
+  {
+    "id": "cf9d9c1d-2230-4767-b717-8de1db5efc48",
+    "userId": "c719421b-7ec5-4fd4-8a8f-76830dbff95f",
+    "name": "new phone ",
+    "targetAmount": 10000,
+    "currentAmount": 100,
+    "targetDate": "2025-05-31T00:00:00.000Z",
+    "description": "",
+    "createdAt": "2025-05-10T03:57:03.221Z",
+    "status": "in-progress"
+  }
+]

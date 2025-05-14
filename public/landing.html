@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Budget Planner</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* Additional styles specific to landing page for dynamic effects */
+      body.landing-page-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: var(
+          --bg-color
+        ); /* Will be dark due to .dark-theme on body */
+        color: var(--text-color); /* Will be light due to .dark-theme on body */
+        text-align: center;
+        padding: 20px;
+        transition: background-color 0.5s ease-in-out;
+        overflow: hidden; /* Hide scrollbars if ring goes outside */
+      }
+
+      .landing-container {
+        background-color: var(--card-bg);
+        padding: 40px 50px;
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        border: 1px solid var(--border-color);
+        max-width: 700px;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        position: relative; /* Needed for the spinning ring */
+        z-index: 1; /* Ensure content is above the ring if it's a pseudo-element */
+      }
+
+      .landing-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); /* Darker shadow for dark theme */
+      }
+
+      /* Pulsating Border Glow Effect */
+      @keyframes pulsatingBorderGlow {
+        0% {
+          box-shadow: 0 0 2px 0px var(--primary-color-translucent),
+            /* Subtle base */ 0 0 4px 1px rgba(255, 0, 255, 0.3),
+            /* Magenta hint */ 0 0 6px 2px rgba(0, 255, 255, 0.2); /* Cyan hint */
+        }
+        50% {
+          box-shadow: 0 0 4px 1px var(--primary-color-translucent),
+            /* Slightly stronger base */ 0 0 8px 3px rgba(255, 0, 255, 0.5),
+            /* Brighter Magenta */ 0 0 12px 5px rgba(0, 255, 255, 0.35); /* Brighter Cyan */
+        }
+        100% {
+          box-shadow: 0 0 2px 0px var(--primary-color-translucent),
+            0 0 4px 1px rgba(255, 0, 255, 0.3),
+            0 0 6px 2px rgba(0, 255, 255, 0.2);
+        }
+      }
+
+      .landing-container {
+        background-color: var(--card-bg);
+        padding: 40px 50px;
+        border-radius: 12px;
+        box-shadow: var(--card-shadow); /* Keep original shadow for depth */
+        border: 1px solid var(--border-color);
+        max-width: 700px;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Keep existing transitions */
+        position: relative; /* For pseudo-element positioning */
+        z-index: 1; /* Ensure content is above pseudo-element */
+      }
+
+      .landing-container::after {
+        /* Using ::after for the border glow */
+        content: "";
+        position: absolute;
+        top: -2px; /* Offset to sit just outside the container's actual border */
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        border-radius: 14px; /* container border-radius (12px) + offset (2px) */
+        z-index: -1; /* Place it behind the container's content but visible around edges */
+        animation: pulsatingBorderGlow 2.5s infinite ease-in-out;
+        /* The pseudo-element itself is transparent; the glow comes from its box-shadow */
+        pointer-events: none; /* Ensure it doesn't interfere with clicks on the container */
+      }
+
+      .landing-container h1 {
+        font-size: 2.8em; /* Slightly larger */
+        margin-bottom: 25px;
+        font-weight: 700; /* Bolder */
+        background: linear-gradient(
+          45deg,
+          var(--primary-color),
+          #ff8fab,
+          #8a75f5
+        ); /* Colorful gradient */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text; /* Standard property, keep for future compatibility */
+        /* text-fill-color: transparent; Removed to avoid unknown property error */
+        padding: 5px 0; /* Add some padding if background clipping is odd */
+      }
+
+      .landing-container p {
+        font-size: 1.2em; /* Slightly larger paragraph */
+        line-height: 1.7;
+        margin-bottom: 40px; /* More space before button */
+        color: var(--text-muted-color);
+      }
+
+      .landing-btn {
+        display: inline-block;
+        padding: 18px 40px; /* Larger button */
+        font-size: 1.25em;
+        color: #fff;
+        /* More colorful button gradient */
+        background-image: linear-gradient(
+          45deg,
+          var(--primary-color) 0%,
+          #ff00ff 50%,
+          var(--primary-hover-color) 100%
+        );
+        background-size: 200% auto; /* For hover animation */
+        border: none;
+        border-radius: 10px; /* Slightly more rounded */
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-position 0.4s ease, transform 0.2s ease,
+          box-shadow 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .landing-btn:hover,
+      .landing-btn:focus {
+        background-position: right center; /* Change gradient direction on hover */
+        transform: translateY(-4px) scale(1.05);
+        box-shadow: 0 8px 20px var(--primary-color-translucent);
+        outline: none;
+      }
+    </style>
+  </head>
+  <body class="landing-page-body dark-theme">
+    <!-- Added dark-theme class here -->
+    <div class="landing-container">
+      <h1>Welcome to Budget Planner!!</h1>
+      <p>
+        Take control of your finances with our intuitive Budget Planner. Track
+        income, manage expenses, and achieve your financial goals with clarity
+        and ease. Get started today!
+      </p>
+      <a href="index.html" class="landing-btn">Get Started / Login</a>
+    </div>
+  </body>
+</html>
