@@ -80,7 +80,7 @@ budget-planner-json/
 1.  **Clone the repository (if applicable) or download the project files.**
 2.  **Navigate to the project directory:**
     ```bash
-    cd budget-planner-json
+    cd budget-planner
     ```
 3.  **Install dependencies:**
     ```bash
