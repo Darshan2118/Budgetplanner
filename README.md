@@ -1,4 +1,4 @@
-# Budget Planner JSON (v1.1.0)
+# Budget Planner (v1.1.0)
 
 ## Description
 
